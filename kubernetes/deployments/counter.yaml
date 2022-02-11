@@ -38,3 +38,7 @@ spec:
           value: "Kubernetes"
         - name: REDIS_HOST
           value: "redis-counter.default.svc.cluster.local"
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 5000
