@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    app: redis-counter
+  name: redis-counter
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis-counter
+  serviceName: redis-counter
+  template:
+    metadata:
+      labels:
+        app: redis-counter
+    spec:
+      containers:
+      - name: redis
+        image: redis:6-alpine
+        ports:
+        - containerPort: 6379
+          protocol: TCP
+          name: redis-port
+        resources:
+          limits:
+            cpu: "0.25"
+            memory: "512Mi"
+          requests:
+            cpu: "0.125"
+            memory: "256Mi"

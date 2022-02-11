@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: counter
+  name: counter
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: counter
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: counter
+    spec:
+      containers:
+      - image: quay.io/kudaliar032/flask-simple-counter:v1
+        name: counter
+        ports:
+        - containerPort: 5000
+          protocol: TCP
+          name: counter-port
+        resources:
+          limits:
+            cpu: "0.25"
+            memory: "512Mi"
+          requests:
+            cpu: "0.125"
+            memory: "256Mi"
+        env:
+        - name: NAME
+          value: "Kubernetes"
+        - name: REDIS_HOST
+          value: "redis-counter.default.svc.cluster.local"
